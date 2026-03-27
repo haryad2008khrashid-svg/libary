@@ -3,66 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>كتێبخانەی گەردونی | سیستەمی ڕیکلام و بەڕێوەبردن</title>
+    <title>كتێبخانەی گەردونی | وەشانی پێشکەوتوو</title>
     <style>
-        :root {
-            --primary: #6366f1;
-            --accent: #f59e0b;
-            --danger: #ef4444;
-            --bg: #030712;
-            --text: #f8fafc;
-        }
-
+        :root { --primary: #6366f1; --accent: #f59e0b; --bg: #030712; --text: #f8fafc; }
         body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; overflow-x: hidden; }
         #bgCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
 
         /* --- Full Screen Ad Popup --- */
         #autoAdOverlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95); z-index: 5000; justify-content: center; align-items: center;
+            background: rgba(0,0,0,0.98); z-index: 9999; justify-content: center; align-items: center;
         }
-        .ad-box { position: relative; width: 90%; max-width: 600px; text-align: center; }
-        .ad-box img, .ad-box video { width: 100%; border-radius: 15px; box-shadow: 0 0 30px var(--accent); }
-        .close-timer { position: absolute; top: -40px; right: 0; color: white; font-weight: bold; background: var(--accent); padding: 5px 15px; border-radius: 20px; }
+        .ad-box { position: relative; width: 95%; max-width: 800px; height: 80vh; border-radius: 20px; overflow: hidden; background: #000; box-shadow: 0 0 50px var(--primary); }
+        .ad-box iframe, .ad-box img, .ad-box video { width: 100%; height: 100%; object-fit: contain; border: none; }
+        .close-timer { position: absolute; top: 15px; right: 15px; color: white; font-weight: bold; background: var(--accent); padding: 8px 20px; border-radius: 30px; z-index: 10000; }
 
-        /* --- Layout --- */
+        /* --- UI Elements --- */
         header { padding: 30px; text-align: center; border-bottom: 2px solid var(--primary); background: rgba(17,24,39,0.8); backdrop-filter: blur(10px); }
-        #mainContent { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; padding: 20px; max-width: 1200px; margin: auto; padding-bottom: 100px; }
-        .category-card { height: 220px; border-radius: 15px; background-size: cover; background-position: center; position: relative; cursor: pointer; border: 1px solid #333; transition: 0.3s; }
-        .category-card:hover { transform: translateY(-5px); border-color: var(--primary); }
+        #mainContent { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; padding: 20px; max-width: 1200px; margin: auto; }
+        .category-card { height: 200px; border-radius: 15px; background-size: cover; background-position: center; position: relative; cursor: pointer; border: 1px solid #333; }
         .category-overlay { position: absolute; bottom: 0; width: 100%; padding: 15px; background: linear-gradient(transparent, #000); border-radius: 0 0 15px 15px; box-sizing: border-box; }
 
-        /* --- Admin Trigger --- */
-        .admin-trigger {
-            position: fixed; bottom: 20px; left: 20px; width: 50px; height: 50px;
-            background: var(--primary); border-radius: 50%; display: flex;
-            align-items: center; justify-content: center; cursor: pointer; z-index: 1000;
-            box-shadow: 0 0 15px rgba(99, 102, 241, 0.5); font-size: 22px;
-        }
-
-        /* --- Modals --- */
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 3000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
-        .modal-content { background: white; color: #222; padding: 25px; border-radius: 20px; width: 90%; max-width: 480px; max-height: 85vh; overflow-y: auto; }
-        input, select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; }
-        
-        .btn { padding: 12px 20px; border-radius: 10px; border: none; cursor: pointer; font-weight: bold; width: 100%; margin: 5px 0; transition: 0.2s; }
-        .btn:active { transform: scale(0.98); }
-        .btn-ad { background: var(--accent); color: black; max-width: 300px; display: block; margin: 20px auto; }
-        
-        /* Book List Inside Modal */
-        .book-row { background: #f1f5f9; margin: 8px 0; padding: 12px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; }
-        .manager-item { border: 1px solid #eee; padding: 10px; border-radius: 10px; margin-top: 10px; background: #fafafa; }
+        /* --- Admin & Buttons --- */
+        .admin-trigger { position: fixed; bottom: 20px; left: 20px; width: 45px; height: 45px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1000; }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 3000; justify-content: center; align-items: center; }
+        .modal-content { background: white; color: #222; padding: 25px; border-radius: 20px; width: 90%; max-width: 450px; max-height: 90vh; overflow-y: auto; }
+        input, select, .btn { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 1px solid #ddd; box-sizing: border-box; font-weight: bold; }
+        .btn { cursor: pointer; border: none; }
+        .btn-pay { background: #e11d48; color: white; }
+        .btn-publish { background: var(--primary); color: white; opacity: 0.5; pointer-events: none; }
+        .btn-active { opacity: 1 !important; pointer-events: auto !important; }
     </style>
 </head>
 <body>
 
 <canvas id="bgCanvas"></canvas>
-<div class="admin-trigger" onclick="openAdmin()">⚙️</div>
+<div class="admin-trigger" onclick="openModal('adminModal')">⚙️</div>
 
 <div id="autoAdOverlay">
-    <div class="ad-box" id="adBoxContent">
-        <div class="close-timer" id="timerDisplay">چاوەڕێ بکە...</div>
-    </div>
+    <div class="close-timer" id="timerDisplay">5</div>
+    <div class="ad-box" id="adBoxContent"></div>
 </div>
 
 <header>
@@ -70,221 +50,130 @@
     <p>Created by: Haryad Khalid</p>
 </header>
 
-<button class="btn btn-ad" onclick="openOrderModal()">🚀 دەتەوێت لێرە ڕیکلام بکەیت؟</button>
+<button class="btn" style="background:var(--accent); max-width:250px; display:block; margin:20px auto;" onclick="openModal('orderModal')">🚀 بڵاوکردنەوەی ڕیکلام</button>
 
 <div id="mainContent"></div>
 
 <div class="modal-overlay" id="adminModal">
     <div class="modal-content">
-        <h3 style="text-align:center; margin-top:0;">بەڕێوەبەرایەتی 🔒</h3>
-        <input type="password" id="adminPass" placeholder="تێپەڕەوشە بنووسە..." oninput="checkLogin()">
-        
-        <div id="adminPanel" style="display:none; margin-top:15px; border-top: 2px solid #eee; pt-3">
-            <p style="color:green; text-align:center; font-size:12px;">✓ دەستکاریکردن چالاکە</p>
-            
-            <label><b>زیادکردنی بەش:</b></label>
-            <input type="text" id="catName" placeholder="ناوی بەش">
-            <input type="text" id="catImg" placeholder="لینکی وێنە">
-            <button class="btn" style="background:var(--primary); color:white;" onclick="addCategory()">دروستکردن</button>
+        <h3 style="text-align:center;">بەڕێوەبەرایەتی 🔒</h3>
+        <input type="password" id="adminPass" placeholder="تێپەڕەوشە..." oninput="checkAdmin()">
+        <div id="adminPanel" style="display:none; border-top:1px solid #eee; margin-top:10px; padding-top:10px;">
+            <label><b>ڕیکلامی خێرا (بەبێ پارە):</b></label>
+            <input type="text" id="adminAdLink" placeholder="لینکی ماڵپەڕ یان وێنە">
+            <button class="btn" style="background:var(--accent);" onclick="publishAdminAd()">بڵاوکردنەوەی ڕیکلام</button>
             <hr>
-            <label><b>زیادکردنی کتێب:</b></label>
-            <select id="catSelect"></select>
-            <input type="text" id="bookTitle" placeholder="ناوی کتێب">
-            <input type="text" id="pdfLink" placeholder="لینکی PDF">
-            <button class="btn" style="background:#059669; color:white;" onclick="addBook()">پاشەکەوتکردن</button>
-            <hr>
-            <label><b>بەڕێوەبردنی سڕینەوە:</b></label>
-            <div id="deleteManager"></div>
-            <button class="btn" style="background:var(--danger); color:white; margin-top:15px;" onclick="deleteAd()">سڕینەوەی ڕیکلامی ئێستا</button>
+            <button class="btn" style="background:#ef4444; color:white;" onclick="localStorage.removeItem('active_ad'); location.reload();">سڕینەوەی ڕیکلام</button>
         </div>
-        <button onclick="closeAdmin()" style="border:none; background:none; color:gray; width:100%; margin-top:10px; cursor:pointer;">داخستن</button>
-    </div>
-</div>
-
-<div class="modal-overlay" id="bookModal">
-    <div class="modal-content" style="background: #1e293b; color: white;">
-        <h3 id="modalTitle" style="text-align:center; border-bottom: 1px solid #334155; padding-bottom: 10px;"></h3>
-        <div id="modalBookList"></div>
-        <button class="btn" onclick="closeModal()" style="background:none; color:var(--danger);">داخستن</button>
+        <button class="btn" onclick="closeModal('adminModal')">داخستن</button>
     </div>
 </div>
 
 <div class="modal-overlay" id="orderModal">
     <div class="modal-content">
-        <h3 style="text-align:center;">بڵاوکردنەوەی ڕیکلام ⚡</h3>
-        <input type="text" id="userAdMedia" placeholder="لینکی وێنە یان ڤیدیۆ">
-        <input type="text" id="userAdTarget" placeholder="لینکی ئەپ یان سایت">
-        <select id="userAdDuration">
-            <option value="1">1 ڕۆژ (750 دینار)</option>
-            <option value="7">1 هەفتە (5000 دینار)</option>
-        </select>
-        <p style="font-weight:bold; font-size:14px;">ناردنی پارە بۆ: 07766924732</p>
-        <a href="https://payment.fast-pay.cash/qr-pay?phone=07766924732" target="_blank" style="text-decoration:none;">
-            <button class="btn" style="background:#e11d48; color:white;">FastPay</button>
+        <h3 style="text-align:center;">ڕیکلامی نوێ</h3>
+        <input type="text" id="userAdLink" placeholder="لێرە لینکی ماڵپەڕەکەت دابنێ">
+        <p style="font-size:12px; color:red;">* پێویستە سەرەتا پارەکە بنێریت بۆ ئەوەی دوگمەی بڵاوکردنەوە کار بکات.</p>
+        
+        <a href="https://payment.fast-pay.cash/qr-pay?phone=07766924732" target="_blank" onclick="enablePublish()">
+            <button class="btn btn-pay">ناردنی پارە (FastPay)</button>
         </a>
-        <button class="btn" style="background:var(--primary); color:white; margin-top:10px;" onclick="publishUserAd()">بڵاوکردنەوەی ئێستا</button>
-        <button onclick="closeOrderModal()" style="border:none; background:none; color:red; cursor:pointer; width:100%;">داخستن</button>
+        
+        <button id="publishBtn" class="btn btn-publish" onclick="publishUserAd()">بڵاوکردنەوەی ئێستا</button>
+        <button class="btn" onclick="closeModal('orderModal')">پاشگەزبوونەوە</button>
     </div>
 </div>
 
 <script>
     let libraryData = JSON.parse(localStorage.getItem('library_db')) || [
-        { name: "فەلسەفە", image: "https://images.unsplash.com/photo-1502139214982-d0ad755818d8?w=500", books: [] },
-        { name: "دینی", image: "https://images.unsplash.com/photo-1542810634-71277d95dcbb?w=500", books: [] }
+        { name: "فەلسەفە", image: "https://images.unsplash.com/photo-1502139214982-d0ad755818d8?w=500" },
+        { name: "دینی", image: "https://images.unsplash.com/photo-1542810634-71277d95dcbb?w=500" }
     ];
     let activeAd = JSON.parse(localStorage.getItem('active_ad')) || null;
 
     window.onload = function() {
         renderUI();
-        if (activeAd && (Date.now() < activeAd.expireDate)) {
-            showAutoAd();
-        }
+        if (activeAd) { showAd(); }
     };
 
-    function sync() {
-        localStorage.setItem('library_db', JSON.stringify(libraryData));
-        renderUI();
-        updateDeleteUI();
-        updateCatDropdown();
-    }
-
     function renderUI() {
-        const container = document.getElementById('mainContent');
-        container.innerHTML = libraryData.map((cat, i) => `
-            <div class="category-card" style="background-image: url('${cat.image}')" onclick="openBookModal(${i})">
-                <div class="category-overlay"><b>${cat.name}</b><br><small>${cat.books.length} کتێب</small></div>
+        document.getElementById('mainContent').innerHTML = libraryData.map(cat => `
+            <div class="category-card" style="background-image: url('${cat.image}')">
+                <div class="category-overlay"><b>${cat.name}</b></div>
             </div>
         `).join('');
     }
 
-    // --- Admin Functions ---
-    function openAdmin() { document.getElementById('adminModal').style.display = 'flex'; }
-    function closeAdmin() { 
-        document.getElementById('adminModal').style.display = 'none'; 
-        document.getElementById('adminPanel').style.display = 'none';
-        document.getElementById('adminPass').value = '';
-    }
-
-    function checkLogin() {
-        if(btoa(document.getElementById('adminPass').value) === "aGFyeWFkMTIz") {
-            document.getElementById('adminPanel').style.display = 'block';
-            updateCatDropdown();
-            updateDeleteUI();
-        }
-    }
-
-    function updateCatDropdown() {
-        document.getElementById('catSelect').innerHTML = libraryData.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
-    }
-
-    function addCategory() {
-        const name = document.getElementById('catName').value;
-        const img = document.getElementById('catImg').value;
-        if(name && img) {
-            libraryData.push({ name, image: img, books: [] });
-            sync();
-            alert("بەشەکە زیادکرا");
-        }
-    }
-
-    function addBook() {
-        const catName = document.getElementById('catSelect').value;
-        const title = document.getElementById('bookTitle').value;
-        const link = document.getElementById('pdfLink').value;
-        const cat = libraryData.find(c => c.name === catName);
-        if(cat && title) {
-            cat.books.push({ title, link });
-            sync();
-            alert("کتێبەکە زیادکرا");
-        }
-    }
-
-    function updateDeleteUI() {
-        const div = document.getElementById('deleteManager');
-        div.innerHTML = libraryData.map((cat, ci) => `
-            <div class="manager-item">
-                <div style="display:flex; justify-content:space-between;">
-                    <b>📁 ${cat.name}</b>
-                    <button onclick="delCat(${ci})" style="color:red; border:none; background:none; cursor:pointer;">سڕینەوە</button>
-                </div>
-            </div>
-        `).join('');
-    }
-
-    function delCat(i) { if(confirm("دڵنیای؟")) { libraryData.splice(i, 1); sync(); } }
-
-    // --- Book Modal ---
-    function openBookModal(i) {
-        const cat = libraryData[i];
-        document.getElementById('modalTitle').innerText = cat.name;
-        const list = document.getElementById('modalBookList');
-        list.innerHTML = cat.books.length ? cat.books.map(b => `
-            <div class="book-row" style="background:rgba(255,255,255,0.05); color:white;">
-                <span>📖 ${b.title}</span>
-                <a href="${b.link}" target="_blank" style="color:var(--primary); font-weight:bold; text-decoration:none;">خوێندنەوە</a>
-            </div>
-        `).join('') : '<p style="text-align:center; opacity:0.5;">هیچ کتێبێک نییە</p>';
-        document.getElementById('bookModal').style.display = 'flex';
-    }
-    function closeModal() { document.getElementById('bookModal').style.display = 'none'; }
-
-    // --- Ad Logic ---
-    function showAutoAd() {
+    // --- Ad Display Logic ---
+    function showAd() {
         const overlay = document.getElementById('autoAdOverlay');
         const content = document.getElementById('adBoxContent');
-        const timer = document.getElementById('timerDisplay');
+        const timerTxt = document.getElementById('timerDisplay');
         overlay.style.display = 'flex';
 
-        let isVideo = activeAd.media.includes('.mp4');
-        if (isVideo) {
-            content.innerHTML += `<video id="adVideo" src="${activeAd.media}" autoplay muted playsinline></video>`;
-            const v = document.getElementById('adVideo');
-            v.onloadedmetadata = () => {
-                let countdown = Math.ceil(v.duration);
-                let int = setInterval(() => {
-                    timer.innerText = `دادەخرێت دوای ${countdown} چرکە`;
-                    countdown--;
-                    if(countdown < 0) { clearInterval(int); closeAutoAd(); }
-                }, 1000);
-            };
+        // تێبینی: ئەگەر لینکەکە وێنە نەبوو، وەک Iframe پیشانی دەدات (ماڵپەڕ)
+        if (activeAd.link.match(/\.(jpeg|jpg|gif|png|webp)$/) != null) {
+            content.innerHTML = `<img src="${activeAd.link}">`;
+        } else if (activeAd.link.includes('mp4')) {
+            content.innerHTML = `<video src="${activeAd.link}" autoplay muted playsinline></video>`;
         } else {
-            content.innerHTML += `<img src="${activeAd.media}" onclick="window.open('${activeAd.target}')">`;
-            let countdown = 5;
-            let int = setInterval(() => {
-                timer.innerText = `دادەخرێت دوای ${countdown} چرکە`;
-                countdown--;
-                if(countdown < 0) { clearInterval(int); closeAutoAd(); }
-            }, 1000);
+            content.innerHTML = `<iframe src="${activeAd.link}"></iframe>`;
+        }
+
+        let count = 5;
+        let countdown = setInterval(() => {
+            count--;
+            timerTxt.innerText = count;
+            if(count <= 0) {
+                clearInterval(countdown);
+                overlay.style.display = 'none';
+            }
+        }, 1000);
+    }
+
+    // --- Admin & Logic ---
+    function checkAdmin() {
+        if(btoa(document.getElementById('adminPass').value) === "aGFyeWFkMTIz") {
+            document.getElementById('adminPanel').style.display = 'block';
         }
     }
 
-    function closeAutoAd() { document.getElementById('autoAdOverlay').style.display = 'none'; }
-    
+    function publishAdminAd() {
+        const link = document.getElementById('adminAdLink').value;
+        if(link) {
+            activeAd = { link: link };
+            localStorage.setItem('active_ad', JSON.stringify(activeAd));
+            location.reload();
+        }
+    }
+
+    function enablePublish() {
+        document.getElementById('publishBtn').classList.add('btn-active');
+    }
+
     function publishUserAd() {
-        const media = document.getElementById('userAdMedia').value;
-        const target = document.getElementById('userAdTarget').value;
-        const days = parseInt(document.getElementById('userAdDuration').value);
-        if(!media) return alert("لینکەکە دابنێ");
-        activeAd = { media, target: target || "#", expireDate: Date.now() + (days * 24 * 60 * 60 * 1000) };
+        const link = document.getElementById('userAdLink').value;
+        if(!link) return alert("لینکەکە دابنێ");
+        activeAd = { link: link };
         localStorage.setItem('active_ad', JSON.stringify(activeAd));
+        alert("بە سەرکەوتوویی بڵاوکرایەوە!");
         location.reload();
     }
 
-    function deleteAd() { localStorage.removeItem('active_ad'); location.reload(); }
-    function openOrderModal() { document.getElementById('orderModal').style.display = 'flex'; }
-    function closeOrderModal() { document.getElementById('orderModal').style.display = 'none'; }
+    function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-    // Background
+    // Particles Background
     const canvas = document.getElementById('bgCanvas');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-    let particles = [];
-    for(let i=0; i<60; i++) particles.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, s: Math.random()*1.5});
+    let p = [];
+    for(let i=0; i<50; i++) p.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, s: Math.random()*1.5});
     function anim() {
         ctx.clearRect(0,0,canvas.width,canvas.height);
-        particles.forEach(p => {
-            p.y += 0.3; if(p.y > canvas.height) p.y = 0;
-            ctx.fillStyle = "white"; ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, Math.PI*2); ctx.fill();
+        p.forEach(i => {
+            i.y += 0.3; if(i.y > canvas.height) i.y = 0;
+            ctx.fillStyle = "white"; ctx.beginPath(); ctx.arc(i.x, i.y, i.s, 0, Math.PI*2); ctx.fill();
         });
         requestAnimationFrame(anim);
     }
