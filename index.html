@@ -3,59 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>كتێبخانەی گەردونی | سیستەمی ڕیکلام و ئەدمین</title>
+    <title>كتێبخانەی گەردونی | وەشانی کۆتایی</title>
     <style>
-        :root {
-            --primary: #6366f1;
-            --accent: #f59e0b;
-            --bg: #030712;
-            --text: #f8fafc;
-        }
-
+        :root { --primary: #6366f1; --accent: #f59e0b; --danger: #ef4444; --bg: #030712; --text: #f8fafc; }
         body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; overflow-x: hidden; }
         #bgCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
 
-        /* --- Full Screen Ad Popup --- */
-        #autoAdOverlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95); z-index: 5000; justify-content: center; align-items: center;
-        }
-        .ad-box { position: relative; width: 90%; max-width: 600px; text-align: center; }
-        .ad-box img, .ad-box video { width: 100%; border-radius: 15px; box-shadow: 0 0 30px var(--accent); }
-        .close-timer { position: absolute; top: -40px; right: 0; color: white; font-weight: bold; background: var(--accent); padding: 5px 15px; border-radius: 20px; }
+        /* --- Ad System --- */
+        #autoAdOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); z-index: 9999; justify-content: center; align-items: center; }
+        .ad-box { position: relative; width: 95%; max-width: 800px; height: 85vh; border-radius: 20px; overflow: hidden; background: #000; box-shadow: 0 0 50px var(--primary); }
+        .ad-box iframe, .ad-box img { width: 100%; height: 100%; border: none; object-fit: contain; }
+        .close-timer { position: absolute; top: 15px; right: 15px; color: white; background: var(--accent); padding: 5px 15px; border-radius: 20px; font-weight: bold; z-index: 10001; }
 
-        /* --- Layout --- */
+        /* --- UI & Cards --- */
         header { padding: 30px; text-align: center; border-bottom: 2px solid var(--primary); background: rgba(17,24,39,0.8); backdrop-filter: blur(10px); }
-        #mainContent { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; padding: 20px; max-width: 1200px; margin: auto; }
-        .category-card { height: 200px; border-radius: 15px; background-size: cover; position: relative; cursor: pointer; border: 1px solid #333; }
+        #mainContent { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; padding: 30px; max-width: 1200px; margin: auto; padding-bottom: 100px; }
+        .category-card { height: 230px; border-radius: 15px; background-size: cover; background-position: center; position: relative; cursor: pointer; border: 1px solid #333; transition: 0.3s; }
+        .category-card:hover { transform: scale(1.03); border-color: var(--primary); }
         .category-overlay { position: absolute; bottom: 0; width: 100%; padding: 15px; background: linear-gradient(transparent, #000); border-radius: 0 0 15px 15px; box-sizing: border-box; }
 
-        /* --- Admin Trigger --- */
-        .admin-trigger {
-            position: fixed; bottom: 20px; left: 20px; width: 45px; height: 45px;
-            background: var(--primary); border-radius: 50%; display: flex;
-            align-items: center; justify-content: center; cursor: pointer; z-index: 1000;
-            box-shadow: 0 0 15px rgba(99, 102, 241, 0.5); font-size: 20px;
-        }
-
         /* --- Modals --- */
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 3000; justify-content: center; align-items: center; }
-        .modal-content { background: white; color: #222; padding: 25px; border-radius: 20px; width: 90%; max-width: 450px; }
-        input, select { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        .admin-trigger { position: fixed; bottom: 20px; left: 20px; width: 50px; height: 50px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1000; }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 3000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
+        .modal-content { background: white; color: #222; padding: 25px; border-radius: 20px; width: 90%; max-width: 500px; max-height: 85vh; overflow-y: auto; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
         
-        .btn { padding: 12px 20px; border-radius: 10px; border: none; cursor: pointer; font-weight: bold; width: 100%; margin: 5px 0; }
-        .btn-ad { background: var(--accent); color: black; max-width: 300px; display: block; margin: 20px auto; }
+        input, select, .btn { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 1px solid #ddd; box-sizing: border-box; font-weight: bold; }
+        .btn { cursor: pointer; border: none; transition: 0.2s; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-success { background: #059669; color: white; }
+        .btn-warning { background: var(--accent); color: black; }
+        
+        .manager-item { border-bottom: 1px solid #eee; padding: 10px 0; display: flex; justify-content: space-between; align-items: center; font-size: 14px; }
     </style>
 </head>
 <body>
 
 <canvas id="bgCanvas"></canvas>
-<div class="admin-trigger" onclick="openAdmin()">⚙️</div>
+<div class="admin-trigger" onclick="openModal('adminModal')">⚙️</div>
 
 <div id="autoAdOverlay">
-    <div class="ad-box" id="adBoxContent">
-        <div class="close-timer" id="timerDisplay">چاوەڕێ بکە...</div>
-    </div>
+    <div class="close-timer" id="timerDisplay">5</div>
+    <div class="ad-box" id="adBoxContent"></div>
 </div>
 
 <header>
@@ -63,161 +51,178 @@
     <p>Created by: Haryad Khalid</p>
 </header>
 
-<button class="btn btn-ad" onclick="openOrderModal()">🚀 دەتەوێت لێرە ڕیکلام بکەیت؟</button>
+<button class="btn btn-warning" style="max-width:250px; display:block; margin:20px auto;" onclick="openModal('orderModal')">🚀 بڵاوکردنەوەی ڕیکلام</button>
 
 <div id="mainContent"></div>
 
 <div class="modal-overlay" id="adminModal">
     <div class="modal-content">
-        <h3 style="text-align:center;">چوونە ژوورەوەی ئەدمین 🔒</h3>
-        <input type="password" id="adminPass" placeholder="تێپەڕەوشە بنووسە...">
-        <button class="btn" style="background:var(--primary); color:white;" onclick="checkLogin()">چوونە ژوورەوە</button>
+        <h3 style="text-align:center; margin-bottom:20px;">بەڕێوەبەرایەتی 🔒</h3>
+        <input type="password" id="adminPass" placeholder="تێپەڕەوشە لێرە بنووسە..." oninput="checkAdmin()">
         
-        <div id="adminPanel" style="display:none; border-top: 1px solid #eee; margin-top: 15px; padding-top: 15px;">
-            <h4>بەڕێوەبردنی داتا</h4>
-            <input type="text" id="catName" placeholder="ناوی بەشی نوێ">
-            <input type="text" id="catImg" placeholder="لینکی وێنەی بەش">
-            <button class="btn" style="background:var(--accent);" onclick="addCategory()">زیادکردنی بەش</button>
+        <div id="adminPanel" style="display:none; border-top:2px solid #6366f1; margin-top:15px; padding-top:15px;">
+            
+            <label style="color:var(--primary)"><b>📢 بڵاوکردنەوەی ڕیکلام (خۆڕایی):</b></label>
+            <input type="text" id="adminAdLink" placeholder="لینکی ماڵپەڕ یان وێنەی ڕیکلام">
+            <button class="btn btn-warning" onclick="publishAdminAd()">بڵاوکردنەوەی ئێستا</button>
             <hr>
-            <button class="btn" style="background:#ef4444; color:white;" onclick="deleteAd()">سڕینەوەی ڕیکلامی ئێستا</button>
+
+            <label><b>📁 دروستکردنی بەش:</b></label>
+            <input type="text" id="catName" placeholder="ناوی بەش (نموونە: مێژوو)">
+            <input type="text" id="catImg" placeholder="لینکی وێنەی بەش">
+            <button class="btn btn-primary" onclick="addCategory()">زیادکردنی بەش</button>
+            <hr>
+
+            <label><b>📖 زیادکردنی کتێب:</b></label>
+            <select id="catSelect"></select>
+            <input type="text" id="bookTitle" placeholder="ناوی کتێب">
+            <input type="text" id="bookLink" placeholder="لینکی PDF">
+            <button class="btn btn-success" onclick="addBook()">پاشەکەوتکردنی کتێب</button>
+            <hr>
+
+            <label><b>🗑️ بەڕێوەبردنی سڕینەوە:</b></label>
+            <div id="deleteManager"></div>
         </div>
-        <button onclick="closeAdmin()" style="border:none; background:none; color:gray; width:100%; margin-top:10px; cursor:pointer;">داخستن</button>
+        
+        <button class="btn" onclick="closeModal('adminModal')" style="background:#64748b; color:white; margin-top:20px;">داخستن</button>
+    </div>
+</div>
+
+<div class="modal-overlay" id="bookModal">
+    <div class="modal-content" style="background:#1e293b; color:white;">
+        <h3 id="modalTitle" style="text-align:center;"></h3>
+        <div id="modalBookList" style="margin:20px 0;"></div>
+        <button class="btn btn-primary" onclick="closeModal('bookModal')">داخستن</button>
     </div>
 </div>
 
 <div class="modal-overlay" id="orderModal">
     <div class="modal-content">
-        <h3 style="text-align:center;">بڵاوکردنەوەی ڕیکلامی خێرا ⚡</h3>
-        <input type="text" id="userAdMedia" placeholder="لینکی وێنە یان ڤیدیۆ">
-        <input type="text" id="userAdTarget" placeholder="لینکی ئەپ یان سایت">
-        <select id="userAdDuration">
-            <option value="1">1 ڕۆژ (750 دینار)</option>
-            <option value="7">1 هەفتە (5000 دینار)</option>
-        </select>
-        <p style="font-weight:bold; margin-bottom:5px;">پارە بنێرە بۆ: 07766924732</p>
-        <a href="https://payment.fast-pay.cash/qr-pay?phone=07766924732" target="_blank" style="text-decoration:none;">
-            <button class="btn" style="background:#e11d48; color:white;">FastPay</button>
+        <h3 style="text-align:center;">بڵاوکردنەوەی ڕیکلام</h3>
+        <input type="text" id="userAdLink" placeholder="لینکی ماڵپەڕەکەت">
+        <p style="font-size:12px; color:red; text-align:center;">* تکایە پارەکە بنێرە بۆ چالاکبوونی دوگمەکە.</p>
+        <a href="https://payment.fast-pay.cash/qr-pay?phone=07766924732" target="_blank" onclick="enableUserBtn()" style="text-decoration:none;">
+            <button class="btn" style="background:#e11d48; color:white;">ناردن بە FastPay</button>
         </a>
-        <button class="btn" style="background:var(--primary); color:white; margin-top:15px;" onclick="publishUserAd()">بڵاوکردنەوەی ئێستا</button>
-        <button onclick="closeOrderModal()" style="border:none; background:none; color:red; cursor:pointer; width:100%;">داخستن</button>
+        <button id="userPubBtn" class="btn" style="background:var(--primary); color:white; opacity:0.3; pointer-events:none;" onclick="publishUserAd()">بڵاوکردنەوە</button>
+        <button class="btn" onclick="closeModal('orderModal')">لابردن</button>
     </div>
 </div>
 
 <script>
-    let libraryData = JSON.parse(localStorage.getItem('library_db')) || [
-        { name: "فەلسەفە", image: "https://images.unsplash.com/photo-1502139214982-d0ad755818d8?w=500", books: [] }
-    ];
+    let libraryData = JSON.parse(localStorage.getItem('library_db')) || [];
     let activeAd = JSON.parse(localStorage.getItem('active_ad')) || null;
 
-    window.onload = function() {
-        renderUI();
-        if (activeAd && (!activeAd.expireDate || Date.now() < activeAd.expireDate)) {
-            showAutoAd();
-        }
-    };
+    window.onload = () => { renderUI(); if(activeAd) showAd(); };
 
-    // --- Admin Logic ---
-    function openAdmin() { document.getElementById('adminModal').style.display = 'flex'; }
-    function closeAdmin() { 
-        document.getElementById('adminModal').style.display = 'none'; 
-        document.getElementById('adminPanel').style.display = 'none';
-        document.getElementById('adminPass').value = '';
+    function sync() {
+        localStorage.setItem('library_db', JSON.stringify(libraryData));
+        renderUI();
+        updateDeleteUI();
+        updateCatDropdown();
     }
-    
-    function checkLogin() {
-        // تێپەڕەوشە لێرە بگۆڕە: haryad123
-        if(document.getElementById('adminPass').value === "haryad123") {
+
+    function renderUI() {
+        const cont = document.getElementById('mainContent');
+        cont.innerHTML = libraryData.length ? libraryData.map((c, i) => `
+            <div class="category-card" style="background-image:url('${c.image}')" onclick="openBookList(${i})">
+                <div class="category-overlay"><b>${c.name}</b><br><small>${c.books ? c.books.length : 0} کتێب</small></div>
+            </div>
+        `).join('') : '<p style="text-align:center; width:100%; opacity:0.5;">هیچ داتایەک نییە، بچۆ بەشی ئەدمین.</p>';
+    }
+
+    // --- Admin Functions ---
+    function checkAdmin() {
+        if(btoa(document.getElementById('adminPass').value) === "aGFyeWFkMTIz") {
             document.getElementById('adminPanel').style.display = 'block';
-            alert("بەخێربێیت ئەدمین!");
-        } else {
-            alert("تێپەڕەوشە هەڵەیە!");
+            updateCatDropdown();
+            updateDeleteUI();
         }
+    }
+
+    function updateCatDropdown() {
+        document.getElementById('catSelect').innerHTML = libraryData.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
     }
 
     function addCategory() {
         const name = document.getElementById('catName').value;
         const img = document.getElementById('catImg').value;
-        if(name && img) {
-            libraryData.push({ name, image: img, books: [] });
-            localStorage.setItem('library_db', JSON.stringify(libraryData));
-            renderUI();
-            alert("بەشەکە زیادکرا!");
-        }
+        if(name && img) { libraryData.push({name, image:img, books:[]}); sync(); alert("بەشەکە زیادکرا"); }
     }
 
-    // --- Ad Logic ---
-    function showAutoAd() {
-        const overlay = document.getElementById('autoAdOverlay');
-        const content = document.getElementById('adBoxContent');
-        const timer = document.getElementById('timerDisplay');
-        overlay.style.display = 'flex';
-
-        let isVideo = activeAd.media.includes('.mp4');
-        if (isVideo) {
-            content.innerHTML += `<video id="adVideo" src="${activeAd.media}" autoplay muted playsinline></video>`;
-            const v = document.getElementById('adVideo');
-            v.onloadedmetadata = () => {
-                let countdown = Math.ceil(v.duration);
-                let int = setInterval(() => {
-                    timer.innerText = `دادەخرێت دوای ${countdown} چرکە`;
-                    countdown--;
-                    if(countdown < 0) { clearInterval(int); closeAutoAd(); }
-                }, 1000);
-            };
-        } else {
-            content.innerHTML += `<img src="${activeAd.media}" onclick="window.open('${activeAd.target}')">`;
-            let countdown = 5;
-            let int = setInterval(() => {
-                timer.innerText = `دادەخرێت دوای ${countdown} چرکە`;
-                countdown--;
-                if(countdown < 0) { clearInterval(int); closeAutoAd(); }
-            }, 1000);
-        }
+    function addBook() {
+        const catName = document.getElementById('catSelect').value;
+        const title = document.getElementById('bookTitle').value;
+        const link = document.getElementById('bookLink').value;
+        const cat = libraryData.find(c => c.name === catName);
+        if(cat && title) { cat.books.push({title, link}); sync(); alert("کتێبەکە زیادکرا"); }
     }
 
-    function closeAutoAd() { document.getElementById('autoAdOverlay').style.display = 'none'; }
-    
-    function publishUserAd() {
-        const media = document.getElementById('userAdMedia').value;
-        const target = document.getElementById('userAdTarget').value;
-        const days = parseInt(document.getElementById('userAdDuration').value);
-        if(!media) return alert("لینکەکە دابنێ");
-        activeAd = { media, target: target || "#", expireDate: Date.now() + (days * 24 * 60 * 60 * 1000) };
-        localStorage.setItem('active_ad', JSON.stringify(activeAd));
-        location.reload();
-    }
-
-    function deleteAd() {
-        localStorage.removeItem('active_ad');
-        alert("ڕیکلامەکە سڕایەوە.");
-        location.reload();
-    }
-
-    function openOrderModal() { document.getElementById('orderModal').style.display = 'flex'; }
-    function closeOrderModal() { document.getElementById('orderModal').style.display = 'none'; }
-
-    function renderUI() {
-        const container = document.getElementById('mainContent');
-        container.innerHTML = libraryData.map(cat => `
-            <div class="category-card" style="background-image: url('${cat.image}')">
-                <div class="category-overlay"><b>${cat.name}</b></div>
-            </div>
+    function updateDeleteUI() {
+        const div = document.getElementById('deleteManager');
+        div.innerHTML = libraryData.map((c, ci) => `
+            <div class="manager-item"><b>📁 ${c.name}</b> <button onclick="delCat(${ci})" style="color:red; background:none; border:none; cursor:pointer;">سڕینەوە</button></div>
+            ${c.books.map((b, bi) => `<div style="font-size:12px; padding-right:15px; display:flex; justify-content:space-between;"><span>- ${b.title}</span> <button onclick="delBook(${ci},${bi})" style="color:orange; background:none; border:none; cursor:pointer;">سڕینەوە</button></div>`).join('')}
         `).join('');
     }
 
-    // Animation background
+    function delCat(i) { if(confirm("دڵنیای لە سڕینەوە؟")) { libraryData.splice(i, 1); sync(); } }
+    function delBook(ci, bi) { if(confirm("بسڕێتەوە؟")) { libraryData[ci].books.splice(bi, 1); sync(); } }
+
+    // --- Ad Functions ---
+    function showAd() {
+        const overlay = document.getElementById('autoAdOverlay');
+        const content = document.getElementById('adBoxContent');
+        const timerTxt = document.getElementById('timerDisplay');
+        overlay.style.display = 'flex';
+
+        if(activeAd.link.match(/\.(jpeg|jpg|gif|png|webp)$/)) {
+            content.innerHTML = `<img src="${activeAd.link}">`;
+        } else {
+            content.innerHTML = `<iframe src="${activeAd.link}"></iframe>`;
+        }
+
+        let count = 5;
+        let countdown = setInterval(() => {
+            count--; timerTxt.innerText = count;
+            if(count <= 0) { clearInterval(countdown); overlay.style.display = 'none'; }
+        }, 1000);
+    }
+
+    function publishAdminAd() {
+        const l = document.getElementById('adminAdLink').value;
+        if(l) { activeAd = {link: l}; localStorage.setItem('active_ad', JSON.stringify(activeAd)); location.reload(); }
+    }
+
+    function enableUserBtn() { document.getElementById('userPubBtn').style.opacity = "1"; document.getElementById('userPubBtn').style.pointerEvents = "auto"; }
+    function publishUserAd() {
+        const l = document.getElementById('userAdLink').value;
+        if(l) { activeAd = {link: l}; localStorage.setItem('active_ad', JSON.stringify(activeAd)); location.reload(); }
+    }
+
+    // --- Helpers ---
+    function openBookList(i) {
+        const cat = libraryData[i];
+        document.getElementById('modalTitle').innerText = cat.name;
+        document.getElementById('modalBookList').innerHTML = cat.books.map(b => `
+            <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px; margin:5px 0; display:flex; justify-content:space-between;">
+                <span>📖 ${b.title}</span> <a href="${b.link}" target="_blank" style="color:var(--primary); font-weight:bold; text-decoration:none;">خوێندنەوە</a>
+            </div>
+        `).join('');
+        openModal('bookModal');
+    }
+    function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+    // BG Anim
     const canvas = document.getElementById('bgCanvas');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-    let p = [];
-    for(let i=0; i<50; i++) p.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, s: Math.random()*1.5});
+    let parts = [];
+    for(let i=0; i<60; i++) parts.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, s: Math.random()*1.5});
     function anim() {
         ctx.clearRect(0,0,canvas.width,canvas.height);
-        p.forEach(i => {
-            i.x += 0.2; i.y += 0.2;
-            if(i.x > canvas.width) i.x = 0;
-            ctx.fillStyle = "white"; ctx.beginPath(); ctx.arc(i.x, i.y, i.s, 0, Math.PI*2); ctx.fill();
-        });
+        parts.forEach(p => { p.y += 0.3; if(p.y > canvas.height) p.y = 0; ctx.fillStyle = "white"; ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, Math.PI*2); ctx.fill(); });
         requestAnimationFrame(anim);
     }
     anim();
