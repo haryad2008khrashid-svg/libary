@@ -33,39 +33,42 @@
             border-bottom: 2px solid var(--primary);
         }
 
-        /* --- Ad Section --- */
-        #adBanner {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 0 20px;
-        }
+        /* --- Ad Banner Section --- */
+        #adBanner { max-width: 1200px; margin: 20px auto; padding: 0 20px; }
         .ad-container {
             background: linear-gradient(45deg, #1e293b, #334155);
             border: 2px dashed var(--accent);
             border-radius: 15px;
             overflow: hidden;
             text-align: center;
-            position: relative;
             min-height: 100px;
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
         }
         .ad-content img, .ad-content video {
-            max-width: 100%;
-            max-height: 300px;
-            display: block;
-            margin: 0 auto;
+            max-width: 100%; max-height: 250px; display: block; margin: 0 auto;
         }
         .ad-link-btn {
-            display: inline-block;
-            padding: 10px 20px;
-            background: var(--accent);
-            color: #000;
-            text-decoration: none;
-            font-weight: bold;
-            border-radius: 8px;
-            margin: 10px;
+            display: inline-block; padding: 8px 18px; background: var(--accent);
+            color: #000; text-decoration: none; font-weight: bold; border-radius: 8px; margin: 10px;
+        }
+
+        /* --- Buttons --- */
+        .order-ad-trigger {
+            background: var(--accent); color: #000; padding: 12px 25px;
+            border-radius: 50px; font-weight: bold; border: none; cursor: pointer;
+            display: block; margin: 20px auto; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+            transition: 0.3s;
+        }
+        .order-ad-trigger:hover { transform: scale(1.05); }
+
+        .payment-btn {
+            width: 100%; padding: 14px; margin: 8px 0; border-radius: 12px;
+            border: none; font-weight: bold; cursor: pointer; color: white;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            text-decoration: none; font-size: 15px;
         }
 
         .credits { color: var(--accent); font-weight: bold; margin-top: 10px; }
@@ -77,19 +80,9 @@
             border-radius: 50%; display: flex; align-items: center;
             justify-content: center; cursor: pointer; z-index: 1000;
             box-shadow: 0 0 20px rgba(99, 102, 241, 0.6);
-            transition: 0.3s;
         }
 
-        /* Forms & Inputs */
-        input, select, button {
-            width: 100%; padding: 12px; margin: 8px 0;
-            border-radius: 10px; border: 1px solid #ddd;
-            font-size: 14px; box-sizing: border-box;
-        }
-        .admin-btn-main { background: var(--primary); color: white; border: none; font-weight: bold; cursor: pointer; }
-        .payment-info { background: #fef3c7; color: #92400e; padding: 15px; border-radius: 10px; font-size: 13px; margin: 10px 0; }
-
-        /* Existing Grid Styles */
+        /* Grid & Modals */
         #mainContent {
             display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 25px; max-width: 1200px; margin: 20px auto; padding: 0 20px 100px 20px;
@@ -106,17 +99,17 @@
 
         .modal-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(8px);
+            background: rgba(0,0,0,0.92); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(8px);
         }
-        .modal-content { background: #1e293b; width: 90%; max-width: 550px; border-radius: 25px; border: 1px solid var(--primary); }
+        .modal-content { background: #1e293b; width: 90%; max-width: 500px; border-radius: 25px; border: 1px solid var(--primary); color: white; }
         
         #adminModal {
             display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
             background: white; color: #1e293b; padding: 25px; border-radius: 20px;
             z-index: 2100; width: 90%; max-width: 450px; max-height: 85vh; overflow-y: auto;
         }
-        .admin-fields { display: none; }
-        .del-btn { background: var(--danger); color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; }
+        input, select, .admin-btn { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 1px solid #ddd; box-sizing: border-box; }
+        .admin-btn { background: var(--primary); color: white; border: none; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -135,51 +128,67 @@
     </div>
 </div>
 
+<button class="order-ad-trigger" onclick="openOrderModal()">📢 دەتەوێت لێرە ڕیکلام بکەیت؟ کلیک بکە</button>
+
 <div id="mainContent"></div>
+
+<div class="modal-overlay" id="orderModal">
+    <div class="modal-content" style="background: white; color: #1e293b; padding: 25px; text-align: center;">
+        <h3 style="margin-top:0; color: var(--primary);">زیادکردنی ڕیکلام 🚀</h3>
+        <div style="background: #fff8e1; padding: 15px; border-radius: 12px; font-size: 14px; text-align: right; line-height: 1.8; margin-bottom: 20px;">
+            💰 <b>نرخی ڕیکلام:</b><br>
+            • 1 ڕۆژ: 750 دینار | • 2 ڕۆژ: 1500 دینار | • 1 هەفتە: 5000 دینار<br>
+            <b>ژمارەی مۆبایل:</b> <span style="direction: ltr; display: inline-block;">0776 692 47 32</span>
+        </div>
+
+        <p style="font-weight: bold;">ڕێگای پارەدان هەڵبژێرە بۆ کردنەوەی ئەپ:</p>
+        
+        <a href="fastpay://transfer?phone=07766924732" class="payment-btn" style="background: #e11d48;">
+            📲 ناردن بە FastPay
+        </a>
+
+        <a href="fib://transfer?account=07766924732" class="payment-btn" style="background: #000;">
+            💳 ناردن بە FIB
+        </a>
+
+        <p style="font-size: 12px; color: #64748b; margin-top: 15px;">دوای ناردنی پارەکە، وێنەی وەسڵەکە و ڕیکلامەکە بنێرە بۆ خاوەن کتێبخانە.</p>
+        <button onclick="closeOrderModal()" style="background: #e2e8f0; border: none; padding: 10px; width: 100%; border-radius: 10px; cursor: pointer; margin-top: 10px;">پاشگەزبوونەوە</button>
+    </div>
+</div>
 
 <div class="modal-overlay" id="adminOverlay" onclick="closeAdmin()"></div>
 <div id="adminModal">
-    <h3 style="text-align:center;">بەڕێوەبەرایەتی و ڕیکلام 🔒</h3>
-    <input type="password" id="adminPass" placeholder="تێپەڕەوشە..." oninput="checkPass()">
+    <h3 style="text-align:center; margin-top:0;">بەڕێوەبەرایەتی 🔒</h3>
+    <input type="password" id="adminPass" placeholder="تێپەڕەوشە لێرە بنووسە..." oninput="checkPass()">
     
-    <div class="admin-fields" id="adminFields">
-        <div style="background: #f1f5f9; padding: 15px; border-radius: 12px; margin-bottom: 20px;">
-            <h4 style="margin-top:0;">📣 زیادکردنی ڕیکلام</h4>
-            <div class="payment-info">
-                💰 <b>نرخی ڕیکلام:</b><br>
-                • 1 ڕۆژ: 750 دینار | • 2 ڕۆژ: 1500 دینار | • 1 هەفتە: 5000 دینار<br><br>
-                <b>ناردنی پارە بۆ (FIB یان FastPay):</b><br>
-                <span style="font-size: 18px; letter-spacing: 1px;"><b>0776 692 47 32</b></span>
-            </div>
-            
-            <select id="adType">
-                <option value="image">وێنە</option>
-                <option value="video">ڤیدیۆ (Link)</option>
-            </select>
-            <input type="text" id="adMediaLink" placeholder="لینکی وێنە یان ڤیدیۆ">
-            <input type="text" id="adTargetLink" placeholder="لینکی ئەپ یان سایت (بۆ کرتە کردن)">
-            <select id="adDuration">
-                <option value="1">1 ڕۆژ (750 دینار)</option>
-                <option value="2">2 ڕۆژ (1500 دینار)</option>
-                <option value="7">1 هەفتە (5000 دینار)</option>
-                <option value="0">بێبەرامبەر (بۆ خۆم - تاقی کردنەوە)</option>
-            </select>
-            <button class="admin-btn-main" onclick="saveAd()" style="background: var(--accent);">بڵاوکردنەوەی ڕیکلام</button>
-            <button class="del-btn" onclick="deleteAd()" style="width:100%; margin-top:5px;">سڕینەوەی ڕیکلامی ئێستا</button>
-        </div>
+    <div id="adminFields" style="display:none;">
+        <hr>
+        <h4 style="margin-bottom:5px;">📣 بەشی ڕیکلام</h4>
+        <select id="adType">
+            <option value="image">وێنە</option>
+            <option value="video">ڤیدیۆ (Direct Link)</option>
+        </select>
+        <input type="text" id="adMediaLink" placeholder="لینکی وێنە یان ڤیدیۆ">
+        <input type="text" id="adTargetLink" placeholder="لینکی ئەپ یان سایت">
+        <select id="adDuration">
+            <option value="1">1 ڕۆژ</option>
+            <option value="2">2 ڕۆژ</option>
+            <option value="7">1 هەفتە</option>
+            <option value="0">هەمیشەیی (بۆ خۆم)</option>
+        </select>
+        <button class="admin-btn" onclick="saveAd()" style="background: var(--accent); color: black;">بڵاوکردنەوە</button>
+        <button onclick="deleteAd()" style="background: var(--danger); color: white; border: none; padding: 8px; width: 100%; border-radius: 8px; cursor: pointer; margin-top: 5px;">سڕینەوەی ڕیکلام</button>
 
         <hr>
-        <label><b>زیادکردنی بەش:</b></label>
+        <h4>📁 بەش و کتێبەکان</h4>
         <input type="text" id="catName" placeholder="ناوی بەش">
-        <input type="text" id="catImg" placeholder="لینکی وێنە">
-        <button class="admin-btn-main" onclick="addCategory()">دروستکردن</button>
+        <input type="text" id="catImg" placeholder="لینکی وێنەی بەش">
+        <button class="admin-btn" onclick="addCategory()">زیادکردنی بەش</button>
         
-        <hr>
-        <label><b>زیادکردنی کتێب:</b></label>
-        <select id="catSelect"></select>
+        <select id="catSelect" style="margin-top: 15px;"></select>
         <input type="text" id="bookTitle" placeholder="ناوی کتێب">
         <input type="text" id="pdfLink" placeholder="لینکی PDF">
-        <button class="admin-btn-main" style="background:var(--success);" onclick="addBook()">پاشەکەوتکردن</button>
+        <button class="admin-btn" style="background: var(--success);" onclick="addBook()">زیادکردنی کتێب</button>
     </div>
 </div>
 
@@ -187,9 +196,9 @@
     <div class="modal-content">
         <div style="padding:20px; border-bottom:1px solid #334155; display:flex; justify-content:space-between; align-items:center;">
             <h2 id="modalTitle" style="margin:0;"></h2>
-            <span style="cursor:pointer; font-size:30px;" onclick="closeModal()">&times;</span>
+            <span style="cursor:pointer; font-size:35px;" onclick="closeModal()">&times;</span>
         </div>
-        <div id="modalBookList" style="padding:20px; max-height:400px; overflow-y:auto;"></div>
+        <div id="modalBookList" style="padding:20px; max-height:450px; overflow-y:auto;"></div>
     </div>
 </div>
 
@@ -198,7 +207,6 @@
     let libraryData = JSON.parse(localStorage.getItem('library_db')) || [
         { name: "دینی", image: "https://images.unsplash.com/photo-1542810634-71277d95dcbb?w=500", books: [] }
     ];
-    
     let activeAd = JSON.parse(localStorage.getItem('active_ad')) || null;
 
     function sync() {
@@ -208,26 +216,23 @@
         renderAd();
     }
 
-    // --- Ad Logic ---
+    // --- Ad Functions ---
     function saveAd() {
         const type = document.getElementById('adType').value;
         const media = document.getElementById('adMediaLink').value;
         const target = document.getElementById('adTargetLink').value;
         const days = parseInt(document.getElementById('adDuration').value);
         
-        if(!media) return alert("تکایە لێنکی وێنە یان ڤیدیۆ دابنێ");
-
+        if(!media) return alert("لینکەکە داغڵ بکە");
         const expireDate = days === 0 ? null : Date.now() + (days * 24 * 60 * 60 * 1000);
 
         activeAd = { type, media, target, expireDate };
         sync();
-        alert("ڕیکلامەکە بڵاوکرایەوە!");
+        alert("ڕیکلامەکە چالاک کرا!");
     }
 
     function renderAd() {
         const display = document.getElementById('adDisplay');
-        
-        // Check Expiration
         if (activeAd && activeAd.expireDate && Date.now() > activeAd.expireDate) {
             activeAd = null;
             localStorage.setItem('active_ad', JSON.stringify(null));
@@ -246,26 +251,20 @@
             <div class="ad-content">
                 ${mediaHtml}
                 <a href="${activeAd.target}" target="_blank" class="ad-link-btn">بینین / داگرتن</a>
-                <div style="font-size:10px; color:var(--accent); padding-bottom:5px;">ADVERTISEMENT</div>
             </div>
         `;
     }
 
-    function deleteAd() {
-        if(confirm("دڵنیای لە سڕینەوەی ڕیکلامەکە؟")) {
-            activeAd = null;
-            sync();
-        }
-    }
+    function deleteAd() { if(confirm("دڵنیای؟")) { activeAd = null; sync(); } }
 
-    // --- UI Logic ---
+    // --- Library UI ---
     function renderUI() {
         const container = document.getElementById('mainContent');
         container.innerHTML = libraryData.map((cat, i) => `
             <div class="category-card" style="background-image: url('${cat.image}')" onclick="openModal(${i})">
                 <div class="category-overlay">
-                    <div style="font-size:1.2rem; font-weight:bold;">${cat.name}</div>
-                    <div style="font-size:12px; color:#ccc;">${cat.books.length} کتێب</div>
+                    <div style="font-size:1.3rem; font-weight:bold;">${cat.name}</div>
+                    <div style="font-size:12px; color:#ddd;">${cat.books.length} کتێب</div>
                 </div>
             </div>
         `).join('');
@@ -276,53 +275,50 @@
         document.getElementById('modalTitle').innerText = cat.name;
         const list = document.getElementById('modalBookList');
         list.innerHTML = cat.books.length ? cat.books.map(b => `
-            <div style="background:rgba(255,255,255,0.05); padding:12px; border-radius:10px; margin-bottom:10px; display:flex; justify-content:space-between;">
-                <span>📖 ${b.title}</span>
+            <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:12px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-weight:bold;">📖 ${b.title}</span>
                 <a href="${b.link}" target="_blank" style="color:var(--primary); text-decoration:none; font-weight:bold;">خوێندنەوە</a>
             </div>
-        `).join('') : '<p style="text-align:center; color:#666;">بەتاڵە</p>';
+        `).join('') : '<p style="text-align:center; color:#888;">هیچ کتێبێک لێرە نییە.</p>';
         document.getElementById('bookModal').style.display = 'flex';
     }
 
     function closeModal() { document.getElementById('bookModal').style.display = 'none'; }
+    function openOrderModal() { document.getElementById('orderModal').style.display = 'flex'; }
+    function closeOrderModal() { document.getElementById('orderModal').style.display = 'none'; }
 
-    // --- Admin Functions ---
+    // --- Admin Logic ---
     function openAdmin() {
         document.getElementById('adminOverlay').style.display = 'block';
         document.getElementById('adminModal').style.display = 'block';
     }
-
     function closeAdmin() {
         document.getElementById('adminOverlay').style.display = 'none';
         document.getElementById('adminModal').style.display = 'none';
     }
-
     function checkPass() {
         if(btoa(document.getElementById('adminPass').value) === "aGFyeWFkMTIz") {
             document.getElementById('adminFields').style.display = 'block';
             updateCatDropdown();
         }
     }
-
     function updateCatDropdown() {
         document.getElementById('catSelect').innerHTML = libraryData.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
     }
-
     function addCategory() {
         const name = document.getElementById('catName').value;
         const img = document.getElementById('catImg').value;
         if(name && img) { libraryData.push({ name, image: img, books: [] }); sync(); }
     }
-
     function addBook() {
         const catName = document.getElementById('catSelect').value;
         const title = document.getElementById('bookTitle').value;
         const link = document.getElementById('pdfLink').value;
         const cat = libraryData.find(c => c.name === catName);
-        if(cat && title) { cat.books.push({ title, link }); sync(); alert("کتێبەکە زیادکرا"); }
+        if(cat && title) { cat.books.push({ title, link }); sync(); alert("زیادکرا!"); }
     }
 
-    // --- Particles Animation ---
+    // --- Background Animation ---
     const canvas = document.getElementById('bgCanvas');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth; canvas.height = window.innerHeight;
@@ -331,7 +327,7 @@
         constructor() {
             this.x = Math.random() * canvas.width;
             this.y = Math.random() * canvas.height;
-            this.size = Math.random() * 1.5;
+            this.size = Math.random() * 1.2;
             this.sx = Math.random() * 0.4 - 0.2;
             this.sy = Math.random() * 0.4 - 0.2;
         }
@@ -342,14 +338,13 @@
         }
         draw() { ctx.fillStyle = "rgba(255,255,255,0.3)"; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fill(); }
     }
-    for(let i=0; i<70; i++) particles.push(new Particle());
+    for(let i=0; i<80; i++) particles.push(new Particle());
     function animate() {
         ctx.clearRect(0,0,canvas.width,canvas.height);
         particles.forEach(p => { p.update(); p.draw(); });
         requestAnimationFrame(animate);
     }
 
-    // Start
     animate();
     sync();
 </script>
